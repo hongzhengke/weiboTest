@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Login
@@ -29,7 +30,9 @@ public class Login extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		if(checkIn(username, password) == true) {
-			request.getRequestDispatcher(SUCCESS_VIEW).forward(request, response);
+			HttpSession session = request.getSession();
+			session.setAttribute("login", username);
+			response.sendRedirect(SUCCESS_VIEW);
 		}
 		else {
 			List<String> errors = new ArrayList<>();
@@ -47,8 +50,10 @@ public class Login extends HttpServlet {
 				reader.readLine();
 				String _password = reader.readLine();
 				if(_password.equals(password)) {
+					reader.close();
 					return true;
 				}
+				reader.close();
 			}
 		}
 		return false;
