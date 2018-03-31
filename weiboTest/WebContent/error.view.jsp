@@ -8,14 +8,14 @@
 <title>错误</title>
 </head>
 <body>
-	<b>注册失败！<br>
+	<b>失败！<br>
 	<%
 		List<String>errors = (List<String>)request.getAttribute("errors");
 		for(String error:errors){
 			out.println(error);
 		}
 	%>
-	<a href = "register.html">返回注册页面</a>
+	<a href = "index.html">返回主页</a>
 	
 </body>
 </html>

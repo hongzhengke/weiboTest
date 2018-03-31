@@ -95,7 +95,7 @@ public class Register extends HttpServlet {
 		File userhome = new File(USERS + username);
 		userhome.mkdir();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(userhome.toString() + "/profile"));
-		writer.write(email + '\t' + password);
+		writer.write(email + '\n' + password);
 		writer.close();
 	}
 	
