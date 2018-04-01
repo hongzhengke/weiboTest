@@ -1,4 +1,4 @@
-package com.weiboTest.khz;
+package com.weiboTest.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

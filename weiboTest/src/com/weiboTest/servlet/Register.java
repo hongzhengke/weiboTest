@@ -1,4 +1,4 @@
-package com.weiboTest.khz;
+package com.weiboTest.servlet;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,30 +9,42 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.*;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.weiboTest.service.UserService;
 
 
 
 /**
  * 该版本暂时没有模型，此servlet临时也充当模型的功能
  */
-@WebServlet("/register.do")
+@WebServlet(
+		urlPatterns = {"/register.do"},
+		initParams = {
+				@WebInitParam(name = "SUCCESS_VIEW",value = "register.success.view.jsp"),
+				@WebInitParam(name = "ERROR_VIEW",value = "error.view.jsp")
+		}
+)
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private final String USERS = "C:/Users/khz/git/weiboTest/users/";
-    private final String SUCCESS_VIEW = "success.view.jsp";
-    private final String ERROR_VIEW = "error.view.jsp";
+    private String SUCCESS_VIEW;
+    private String ERROR_VIEW ;
     
-    public Register() {
-        super();
-        // TODO Auto-generated constructor stub
+    @Override
+	public void init() {
+    	ServletConfig config = super.getServletConfig();
+    	SUCCESS_VIEW = config.getInitParameter("SUCCESS_VIEW");
+    	ERROR_VIEW = config.getInitParameter("ERROR_VIEW");
     }
-
-	
+    
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//取得请求参数
 		String email = request.getParameter("email");
@@ -40,11 +52,13 @@ public class Register extends HttpServlet {
 		String password = request.getParameter("password");
 		String confirmedPasswd = request.getParameter("confirmedPasswd");
 		
+		UserService userService = (UserService)request.getServletContext().getAttribute("userService");
+		
 		List<String> errors = new ArrayList<>();
 		if(!isValidEmail(email)) {
 			errors.add("邮箱错误！");
 		}
-		else if(!isValidUsername(username)) {
+		else if(!userService.isValidUsername(username)) {
 			errors.add("用户名错误！");
 		}
 		else if(!isValidPassword(password, confirmedPasswd)) {
@@ -57,7 +71,7 @@ public class Register extends HttpServlet {
 		}
 		else {
 			resultPage = SUCCESS_VIEW;
-			createUserData(email, username, password);  //这里不是线程安全的！
+			userService.createUserData(email, username, password);  //这里不是线程安全的！
 		}
 		request.getRequestDispatcher(resultPage).forward(request, response);
 	}
@@ -65,22 +79,6 @@ public class Register extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-	}
-	
-	private boolean isValidEmail(String email) {
-		return Pattern.matches("[0-9a-zA-Z]+@[0-9a-zA-Z\\.]+\\.[a-zA-Z]+", email);
-	}
-	
-	private boolean isValidUsername(String username) {
-		if(username == null || username.length() > 16 || username.length() == 0)
-			return false;
-		
-		String[] list = new File(USERS).list();
-		for(String tmpUserName : list) {
-			if(tmpUserName.equals(username))
-				return false;
-		}
-		return true;
 	}
 	
 	private boolean isValidPassword(String password,String confirmedPasswd) {
@@ -91,16 +89,7 @@ public class Register extends HttpServlet {
 		return true;
 	}
 	
-	private void createUserData(String email,String username,String password) throws IOException {
-		File userhome = new File(USERS + username);
-		userhome.mkdir();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(userhome.toString() + "/profile"));
-		writer.write(email + '\n' + password);
-		writer.close();
-	}
-	
-	public static void main(String[] args) {
-		File file = new File("users");
-		file.mkdir();
+	private boolean isValidEmail(String email) {
+		return Pattern.matches("[0-9a-zA-Z]+@[0-9a-zA-Z\\.]+\\.[a-zA-Z]+", email);
 	}
 }

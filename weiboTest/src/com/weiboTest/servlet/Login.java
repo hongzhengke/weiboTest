@@ -1,4 +1,4 @@
-package com.weiboTest.khz;
+package com.weiboTest.servlet;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,27 +9,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.weiboTest.service.UserService;
+
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/login.do")
+@WebServlet(
+		urlPatterns = {"/login.do"},
+		initParams = {
+				@WebInitParam(name = "SUCCESS_VIEW",value = "member.view.jsp"),
+				@WebInitParam(name = "ERROR_VIEW",value = "error.view.jsp")
+		}
+)
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String USERS = "C:/Users/khz/git/weiboTest/users/";
-	private final String SUCCESS_VIEW = "member.view.jsp";
-	private final String ERROR_VIEW = "error.view.jsp"; 
+	private String SUCCESS_VIEW ;
+	private String ERROR_VIEW ;
+	
+	@Override
+	public void init() {
+		ServletConfig config = super.getServletConfig();
+		SUCCESS_VIEW = config.getInitParameter("SUCCESS_VIEW");
+		ERROR_VIEW = config.getInitParameter("ERROR_VIEW");
+	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		if(checkIn(username, password) == true) {
+		
+		UserService userService = (UserService)request.getServletContext().getAttribute("userService");
+		
+		if(userService.checkIn(username, password) == true) {
 			HttpSession session = request.getSession();
 			session.setAttribute("login", username);
 			response.sendRedirect(SUCCESS_VIEW);
@@ -41,23 +60,7 @@ public class Login extends HttpServlet {
 			request.getRequestDispatcher(ERROR_VIEW).forward(request, response);
 		}
 	}
-	
-	private boolean checkIn(String username,String password) throws IOException {
-		//这样子读文件也不是线程安全的，因为可能有人同时在进行注册
-		for(String _username : new File(USERS).list()) {
-			if(_username.equals(username)) {
-				BufferedReader reader = new BufferedReader(new FileReader(USERS + _username + "/profile"));
-				reader.readLine();
-				String _password = reader.readLine();
-				if(_password.equals(password)) {
-					reader.close();
-					return true;
-				}
-				reader.close();
-			}
-		}
-		return false;
-	}
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub

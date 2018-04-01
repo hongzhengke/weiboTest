@@ -12,11 +12,11 @@
 <title>会员主页</title>
 </head>
 <body>
-<%
+<%/*
 	if(session == null || session.getAttribute("login") == null){
 		response.sendRedirect("index.html");
 		return;
-	}
+	}*/
 %>
 <a href = "logout.do">注销</a><br>
 
