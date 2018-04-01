@@ -12,7 +12,9 @@
 	<%
 		List<String>errors = (List<String>)request.getAttribute("errors");
 		for(String error:errors){
-			out.println(error);
+			%>
+			<%=error %>
+<% 
 		}
 	%>
 	<a href = "index.html">返回主页</a>

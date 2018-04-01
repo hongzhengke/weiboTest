@@ -14,6 +14,7 @@ public class EncodingGetFilter extends HttpFilter{
 	@Override
 	public void doFilter(HttpServletRequest request, HttpServletResponse response,
             FilterChain chain) throws IOException, ServletException {
+		request.setCharacterEncoding("utf-8");
 		chain.doFilter(new EncodingGetWrapper(request), response);
 	}
 }

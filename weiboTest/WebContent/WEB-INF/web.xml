@@ -5,4 +5,11 @@
   	<param-name>USERS</param-name>
   	<param-value>C:/Users/khz/git/weiboTest/users/</param-value>
   </context-param>
+  <jsp-config>
+  	<jsp-property-group>
+  		<url-pattern>*.jsp</url-pattern>
+  		<page-encoding>utf-8</page-encoding>
+  		<default-content-type>text/html</default-content-type>
+  	</jsp-property-group>
+  </jsp-config>
 </web-app>

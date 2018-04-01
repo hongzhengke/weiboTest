@@ -9,6 +9,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.*;
 
+import com.weiboTest.bean.WeiboBean;
+
 public class UserService {
 	private final String USERS;
 	public UserService(String USERS) {
@@ -67,9 +69,10 @@ public class UserService {
 		}
 	}
 	
-	public Map<Date,String> readMessage(String username) throws IOException{
+	public List<WeiboBean> getWeibos(String username) throws IOException{
 		File dir = new File(USERS + username);
 		TreeMap<Date,String>messageMap = new TreeMap<>(new reverseDateComparator());
+		List<WeiboBean>list = new ArrayList<>();
 		for(String filename: dir.list(new TxtFileNameFilter())){
 			Date date = new Date(Long.parseLong(filename.substring(0,filename.indexOf(".txt"))));
 			BufferedReader reader = new BufferedReader(new FileReader(USERS + username + "/" + filename));
@@ -79,21 +82,28 @@ public class UserService {
 				message.append(tmp);
 				message.append('\n');
 			}
-			messageMap.put(date,message.toString());
+			messageMap.put(date, message.toString());
 			reader.close();
 		}
-		return messageMap;
+		for(Date date : messageMap.keySet()) {
+			list.add(new WeiboBean(username,date,messageMap.get(date)));
+		}
+		return list;
 	}
 	
-	public void writeMessage(String username,String message) throws IOException {
-		Date nowTime = new Date();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(USERS + username + "/" + nowTime.getTime() + ".txt"));
+	public void addWeibo(WeiboBean weibo) throws IOException {
+		String username = weibo.getUsername();
+		String date = String.valueOf(weibo.getDate().getTime());
+		String message = weibo.getMessage();
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter(USERS + username + "/" + date + ".txt"));
 		writer.write(message);
 		writer.close();
 	}
 	
-	public void deleteMessage(String username,String date) {
-		File file = new File(USERS + username + "/" + date + ".txt");
+	public void deleteWeibo(WeiboBean weibo) {
+		String username = weibo.getUsername();
+		File file = new File(USERS + username + "/" + weibo.getDate().getTime() + ".txt");
 		file.delete();
 	}
 }

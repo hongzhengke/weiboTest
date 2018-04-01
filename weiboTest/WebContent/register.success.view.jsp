@@ -1,3 +1,4 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.Param"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,9 +8,8 @@
 <title>注册成功</title>
 </head>
 <body>
-<%
-	out.println("恭喜您！" + request.getParameter("username") + "注册成功！");
-%>
+恭喜您! ${param.username} 注册成功！
+<!--${param.username} -->
 <br>
 <a href = "index.html">回主页登录</a>
 </body>

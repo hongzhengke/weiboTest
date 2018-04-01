@@ -1,6 +1,7 @@
 package com.weiboTest.servlet;
 
 import java.io.BufferedWriter;
+
 import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,12 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.weiboTest.bean.WeiboBean;
 import com.weiboTest.service.UserService;
 
 
-/**
- * Servlet implementation class Message
- */
+
 @WebServlet(
 		urlPatterns = {"/message.do"},
 		initParams = {
@@ -48,14 +48,19 @@ public class Message extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserService userService = (UserService)request.getServletContext().getAttribute("userService");
 		String username = (String)(request.getSession().getAttribute("login"));
-		List<String>errors = new ArrayList<>();
-		request.setCharacterEncoding("utf-8");
 		String message = request.getParameter("message");
-		if(message == null || message.length() > 160) {
-			errors.add("不合格的字数");
-			response.sendRedirect(ERROR_VIEW);
+		
+		if(message != null) {
+			List<String>errors = new ArrayList<>();
+			if(message == null || message.length() > 160) {
+				errors.add("不合格的字数");
+				response.sendRedirect(ERROR_VIEW);
+			}
+			userService.addWeibo(new WeiboBean(username,new Date(),message));
 		}
-		userService.writeMessage(username, message);
+		
+		List<WeiboBean>weibos = userService.getWeibos(username);
+		request.getSession().setAttribute("weibos", weibos);
 		response.sendRedirect(SUCCESS_VIEW);
 	}
 	

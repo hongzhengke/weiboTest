@@ -14,6 +14,8 @@ public class EncodingGetWrapper extends HttpServletRequestWrapper{
 	@Override
 	public String getParameter(String name){
 		String value = super.getParameter(name);
+		if(value == null)
+			return null;
 		try {
 			return new String(value.getBytes(), "utf-8");
 		} catch (UnsupportedEncodingException e) {

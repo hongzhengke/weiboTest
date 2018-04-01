@@ -3,6 +3,7 @@ package com.weiboTest.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.weiboTest.bean.WeiboBean;
 import com.weiboTest.service.UserService;
 
 /**
@@ -22,7 +24,7 @@ import com.weiboTest.service.UserService;
 @WebServlet(
 		urlPatterns = {"/delete.do"},
 		initParams = {
-				@WebInitParam(name = "SUCCESS_VIEW",value = "member.view.jsp"),
+				@WebInitParam(name = "SUCCESS_VIEW",value = "message.do"),
 				@WebInitParam(name = "ERROR_VIEW",value = "error.view.jsp")
 		}
 )
@@ -49,7 +51,8 @@ public class Delete extends HttpServlet {
 		UserService userService = (UserService)request.getServletContext().getAttribute("userService");
 		String username = (String)request.getSession().getAttribute("login");
 		String date = request.getParameter("date");
-		userService.deleteMessage(username, date);
+		System.out.println(Long.valueOf(date));
+		userService.deleteWeibo(new WeiboBean(username, new Date(Long.valueOf(date)), ""));
 		response.sendRedirect(SUCCESS_VIEW);
 	}
 

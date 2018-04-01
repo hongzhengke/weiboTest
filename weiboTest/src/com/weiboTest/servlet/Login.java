@@ -26,7 +26,7 @@ import com.weiboTest.service.UserService;
 @WebServlet(
 		urlPatterns = {"/login.do"},
 		initParams = {
-				@WebInitParam(name = "SUCCESS_VIEW",value = "member.view.jsp"),
+				@WebInitParam(name = "SUCCESS_VIEW",value = "message.do"),
 				@WebInitParam(name = "ERROR_VIEW",value = "error.view.jsp")
 		}
 )
