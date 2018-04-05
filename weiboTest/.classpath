@@ -12,7 +12,6 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Program Files/Java/commons-lang3-3.7.jar" sourcepath="C:/Program Files/Java/commons-lang3-3.7-sources.jar"/>
 	<classpathentry kind="output" path="build/classes"/>

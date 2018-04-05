@@ -2,14 +2,17 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>weiboTest</display-name>
   <context-param>
-  	<param-name>USERS</param-name>
-  	<param-value>C:/Users/khz/git/weiboTest/users/</param-value>
+    <param-name>USERS</param-name>
+    <param-value>C:/Users/khz/git/weiboTest/users/</param-value>
   </context-param>
+  
+  
   <jsp-config>
-  	<jsp-property-group>
-  		<url-pattern>*.jsp</url-pattern>
-  		<page-encoding>utf-8</page-encoding>
-  		<default-content-type>text/html</default-content-type>
-  	</jsp-property-group>
+  
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <page-encoding>utf-8</page-encoding>
+      <default-content-type>text/html</default-content-type>
+    </jsp-property-group>
   </jsp-config>
 </web-app>

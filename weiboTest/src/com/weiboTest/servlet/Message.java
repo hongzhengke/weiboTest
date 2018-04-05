@@ -60,8 +60,9 @@ public class Message extends HttpServlet {
 		}
 		
 		List<WeiboBean>weibos = userService.getWeibos(username);
-		request.getSession().setAttribute("weibos", weibos);
-		response.sendRedirect(SUCCESS_VIEW);
+		request.setAttribute("weibos", weibos);
+		request.setAttribute("username", username);
+		request.getRequestDispatcher(SUCCESS_VIEW).forward(request, response);
 	}
 	
 }

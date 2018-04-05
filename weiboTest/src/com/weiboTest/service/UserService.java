@@ -13,20 +13,29 @@ import com.weiboTest.bean.WeiboBean;
 
 public class UserService {
 	private final String USERS;
+	private LinkedList<WeiboBean> newestWeibos;
 	public UserService(String USERS) {
 		this.USERS = USERS;
+		newestWeibos = new LinkedList<>();
 	}
 	
 	public boolean isValidUsername(String username) {
 		if(username == null || username.length() > 16 || username.length() == 0)
 			return false;
 		
+		if(isExistUsername(username))
+			return false;
+		else
+			return true;
+	}
+	
+	public boolean isExistUsername(String username) {
 		String[] list = new File(USERS).list();
 		for(String tmpUserName : list) {
 			if(tmpUserName.equals(username))
-				return false;
+				return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public void createUserData(String email,String username,String password) throws IOException {
@@ -95,6 +104,7 @@ public class UserService {
 		String username = weibo.getUsername();
 		String date = String.valueOf(weibo.getDate().getTime());
 		String message = weibo.getMessage();
+		newestWeibos.add(weibo);
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(USERS + username + "/" + date + ".txt"));
 		writer.write(message);
@@ -103,7 +113,13 @@ public class UserService {
 	
 	public void deleteWeibo(WeiboBean weibo) {
 		String username = weibo.getUsername();
+		newestWeibos.remove(weibo);
 		File file = new File(USERS + username + "/" + weibo.getDate().getTime() + ".txt");
 		file.delete();
 	}
+
+	public LinkedList<WeiboBean> getNewestWeibos() {
+		return newestWeibos;
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.weiboTest.bean;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.*;
 
 public class WeiboBean implements Serializable{
@@ -14,6 +15,18 @@ public class WeiboBean implements Serializable{
 		this.username = username;
 		this.date = date;
 		this.message = message;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		WeiboBean t = (WeiboBean)o;
+		return username.equals(t.getUsername()) && date.equals(t.getDate());
+	}
+	
+	@Override
+	public String toString() {
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.CHINA);
+		return message + "  " + username + " " + dateFormat.format(date) + "^_^";
 	}
 	
 	public WeiboBean() {

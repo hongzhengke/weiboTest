@@ -58,10 +58,12 @@ public class Register extends HttpServlet {
 		if(!isValidEmail(email)) {
 			errors.add("邮箱错误！");
 		}
-		else if(!userService.isValidUsername(username)) {
+		
+		if(!userService.isValidUsername(username)) {
 			errors.add("用户名错误！");
 		}
-		else if(!isValidPassword(password, confirmedPasswd)) {
+		
+		if(!isValidPassword(password, confirmedPasswd)) {
 			errors.add("密码错误！");
 		}
 		String resultPage;

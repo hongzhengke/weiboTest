@@ -6,6 +6,8 @@
 <%@page import="java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,17 +22,11 @@
 	<textarea col = "60" rows = "4" name = "message"></textarea><br>
 	<button type = "submit">发表</button><br>
 </form>
-
-<%
-	DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.CHINA);
-	List<WeiboBean>weibos = (List<WeiboBean>)session.getAttribute("weibos");
-	for(WeiboBean weibo:weibos){
-%>		<%= weibo.getMessage() %><br>
-		<%= dateFormat.format(weibo.getDate()) %>
-		 <a href = "delete.do?date=<%=weibo.getDate().getTime()%>">删除这条微博</a><br>
-<% 
-	}
-%>
+<c:forEach var = "weibo" items = "${weibos}">
+	${weibo.message }<br>
+	<fmt:formatDate value = "${weibo.date}" type="both" dateStyle = "full" timeStyle = "full"/>
+	<a href = "delete.do?date=${weibo.date.time}">删除</a><br>
+</c:forEach>
 
 </body>
 </html>
