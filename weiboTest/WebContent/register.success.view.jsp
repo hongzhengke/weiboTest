@@ -11,6 +11,6 @@
 恭喜您! ${param.username} 注册成功！
 <!--${param.username} -->
 <br>
-<a href = "index.html">回主页登录</a>
+<a href = "index.jsp">回主页登录</a>
 </body>
 </html>

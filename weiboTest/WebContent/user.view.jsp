@@ -18,7 +18,7 @@
 
 <c:forEach var = "weibo" items = "${weibos}">
 	${weibo.message}<br>
-	<fmt:formatDate value = "${weibo.date}" type = "both" dateStyle = "full" timeStyle = "full" />
+	<fmt:formatDate value = "${weibo.date}" type = "both" dateStyle = "full" timeStyle = "full" /><br>
 </c:forEach>
 <%-- <%
 	DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.CHINA);

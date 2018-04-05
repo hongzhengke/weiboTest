@@ -26,7 +26,7 @@
 <% 
 		}
 	%> --%>
-	<a href = "index.html">返回主页</a>
+	<a href = "index.jsp">返回主页</a>
 	
 </body>
 </html>

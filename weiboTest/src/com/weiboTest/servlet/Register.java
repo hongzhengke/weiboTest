@@ -73,7 +73,7 @@ public class Register extends HttpServlet {
 		}
 		else {
 			resultPage = SUCCESS_VIEW;
-			userService.createUserData(email, username, password);  //这里不是线程安全的！
+			userService.addAccount(username, password,email);  //这里不是线程安全的！
 		}
 		request.getRequestDispatcher(resultPage).forward(request, response);
 	}

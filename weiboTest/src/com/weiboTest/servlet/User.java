@@ -34,7 +34,7 @@ public class User extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getPathInfo().substring(1);
 		UserService userService = (UserService)request.getServletContext().getAttribute("userService");
-		if(userService.isExistUsername(username) == false) {
+		if(userService.isValidUsername(username) == true) {
 			response.sendRedirect(ERROR_VIEW);
 		}
 		else {

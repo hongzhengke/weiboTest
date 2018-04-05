@@ -50,8 +50,9 @@ public class Delete extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserService userService = (UserService)request.getServletContext().getAttribute("userService");
 		String dateString = request.getParameter("date");
-		WeiboBean weibo = new WeiboBean((String)request.getSession().getAttribute("login"), new Date(Long.parseLong(dateString)), "");
-		userService.deleteWeibo(weibo);
+		String username = (String)request.getSession().getAttribute("login");
+		Date date = new Date(Long.parseLong(dateString));
+		userService.deleteWeibo(username,date);
 		response.sendRedirect(SUCCESS_VIEW);
 	}
 
